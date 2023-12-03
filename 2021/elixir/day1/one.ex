@@ -2,15 +2,16 @@
 
 # ── Section ──
 
-IO.puts File.read!("input.txt")
-|> String.split("\n", trim: true)
-|> Enum.map(&String.to_integer/1)
-|> Enum.chunk_every(2, 1, :discard)
-|> Enum.count(fn [left, right] -> right > left end)
+IO.puts(
+  File.read!("input.txt")
+  |> String.split("\n", trim: true)
+  |> Enum.map(&String.to_integer/1)
+  |> Enum.chunk_every(2, 1, :discard)
+  |> Enum.count(fn [left, right] -> right > left end)
+)
 
 # IO.puts "Increased by"
 # IO.puts input
-
 
 # IO.puts "Increased by"
 # IO.puts input
@@ -34,7 +35,6 @@ IO.puts File.read!("input.txt")
 #     IO.puts('the end is here')
 #   end
 # end
-
 
 # Day1.part1(file)
 # Day1.part1(file)
