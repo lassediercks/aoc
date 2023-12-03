@@ -14,9 +14,15 @@ defmodule TwentythreeTest do
   # end
 
   test "convert to number" do
-    assert Dayone.Dayone.numberStringMatch("one5fivetwothree9") == "155239"
-    assert Dayone.Dayone.numberStringMatch("onsadge3nine") == "onsadge39"
-    assert Dayone.Dayone.numberStringMatch("twotwotwotwofive") == "22225"
+    assert Dayone.Dayone.numberStringMatch("one5fivetwothree9") ==
+             "one1one5five5fivetwo2twothree3three9"
+
+    assert Dayone.Dayone.numberStringMatch("onsadge3nine") == "onsadge3nine9nine"
+
+    assert Dayone.Dayone.numberStringMatch("twotwotwotwofive") ==
+             "two2twotwo2twotwo2twotwo2twofive5five"
+
+    assert Dayone.Dayone.numberStringMatch("twone5") == "two2twone1one5"
   end
 
   test "combine both" do
@@ -39,5 +45,9 @@ defmodule TwentythreeTest do
 
     assert Dayone.Dayone.numberStringMatch("7pqrstsixteen") |> Dayone.Dayone.resultFromString() ===
              76
+  end
+
+  test "full" do
+    assert Dayone.Dayone.inputToSum(["76", "89", "one5fivetwothree9"]) === 184
   end
 end

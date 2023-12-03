@@ -32,7 +32,19 @@ defmodule Dayone.Dayone do
     result
   end
 
+  # def replaceStringSafe(content, pattern, replacment) do
+  #   ret =
+  #     case String.replace(content, pattern, replacment) do
+  #       {:ok, val} -> val
+  #     end
+
+  #   IO.puts(ret)
+  #   ret
+  # end
+
   def numberStringMatch(content) do
+    # IO.inspect(content, label: "input")
+
     digit_map = %{
       one: "1",
       two: "2",
@@ -45,33 +57,77 @@ defmodule Dayone.Dayone do
       nine: "9"
     }
 
-    keys = digit_map |> Enum.map(fn {key, _} -> Atom.to_string(key) end)
+    new =
+      digit_map
+      |> Enum.reduce(content, fn {key, val}, acc ->
+        keystring = Atom.to_string(key)
 
-    String.replace(content, keys, fn x ->
-      digit_map[String.to_atom(x)]
-    end)
+        # IO.inspect(acc, label: "acc is")
+        # IO.puts(key)
+        # IO.puts(val)
+
+        acc =
+          if String.match?(acc, ~r/#{keystring}/) do
+            String.replace(acc, keystring, "#{key}#{val}#{key}")
+          else
+            acc
+          end
+
+        # IO.inspect(acc, label: "acc is")
+        acc
+        # [acc | String.match?(content, )]/
+        # if add != nil do
+        #   [add | acc]
+        # else
+        #   acc
+        # end
+      end)
+
+    # IO.inspect(new, label: "new")
+
+    # keys = digit_map |> Enum.map(fn {key, _} -> Atom.to_string(key) end)
+
+    # out =
+    #   String.replace(content, keys, fn x ->
+    #     digit_map[String.to_atom(x)]
+    #   end)
+
+    # # IO.inspect(out, label: "output")
+    # out
+    new
   end
 
   def total do
     input = getInput()
     input = input |> Enum.map(&resultFromString/1)
     input = Enum.sum(input)
-    IO.inspect(input)
+    IO.inspect(input, label: "Part one answer")
+
+    parttwo = getInput()
+
+    parttwo =
+      parttwo
+      |> Enum.map(fn x ->
+        numberStringMatch(x) |> resultFromString
+      end)
+
+    parttwo = Enum.sum(parttwo)
+    IO.inspect(parttwo, label: "Part two answer")
+  end
+
+  def inputToSum(input) do
+    input
+    |> Enum.map(fn x ->
+      numberStringMatch(x) |> resultFromString
+    end)
+    |> Enum.sum()
   end
 
   def totalTwo do
-    input = getInput()
-
-    input =
-      input
-      |> Enum.map(fn x ->
-        IO.inspect(x, label: "input")
-        out = numberStringMatch(x) |> resultFromString
-        IO.inspect(out, label: "output")
-        out
-      end)
-
-    input = Enum.sum(input)
-    input
+    getInput()
+    |> Enum.map(fn x ->
+      numberStringMatch(x) |> resultFromString
+    end)
+    |> Enum.sum()
   end
 end
