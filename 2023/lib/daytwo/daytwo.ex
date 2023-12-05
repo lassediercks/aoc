@@ -60,6 +60,24 @@ defmodule Daytwo do
     |> Enum.count(&(&1 == true)) === 0
   end
 
+  def determineMinimumGems(game) do
+    Enum.reduce(game, %{}, fn {key, val}, acc ->
+      Map.update(acc, key, val, fn current ->
+        if current < val do
+          val
+        else
+          current
+        end
+      end)
+    end)
+  end
+
+  def gemMapPower(gems) do
+    Enum.reduce(gems, 1, fn {_, val}, acc ->
+      acc * val
+    end)
+  end
+
   def amountOfPossibles(gemAmount) do
     lists = getInput() |> Enum.map(&createGemList/1)
 
@@ -79,17 +97,32 @@ defmodule Daytwo do
         [id] ++ determinePossible(gemAmount, list)
       end)
 
-    truthies =
-      Enum.reduce(possibles, 0, fn [id | possible], acc ->
-        if possible do
-          acc + id
-        else
-          acc
-        end
-      end)
+    Enum.reduce(possibles, 0, fn [id | possible], acc ->
+      if possible do
+        acc + id
+      else
+        acc
+      end
+    end)
 
     # IO.inspect(tuples)
     # |> Enum.map(&createGemMap/1)
     # |> Enum.map(fn x -> determinePossible(gemAmount, x) end)
+  end
+
+  def sumOfMinimums do
+    lists = getInput() |> Enum.map(&createGemList/1)
+
+    tuples =
+      lists
+      |> Enum.map(fn [_, list] ->
+        # IO.inspect(id)
+        # IO.inspect(list)
+        createGameTuple(list)
+      end)
+
+    minimums = tuples |> Enum.map(&determineMinimumGems/1)
+    powers = minimums |> Enum.map(&gemMapPower/1)
+    Enum.sum(powers)
   end
 end

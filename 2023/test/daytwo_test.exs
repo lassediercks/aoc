@@ -32,4 +32,27 @@ defmodule TwentythreeTestTwo do
              {:red, 12}
            ]) === true
   end
+
+  test "determine minimum needed" do
+    assert Daytwo.determineMinimumGems([
+             {:blue, 3},
+             {:red, 12},
+             {:green, 13},
+             {:red, 13},
+             {:green, 15},
+             {:green, 19}
+           ]) === %{
+             blue: 3,
+             red: 13,
+             green: 19
+           }
+  end
+
+  test "power of gemmap" do
+    assert Daytwo.gemMapPower(%{
+             blue: 3,
+             red: 13,
+             green: 19
+           }) === 741
+  end
 end
