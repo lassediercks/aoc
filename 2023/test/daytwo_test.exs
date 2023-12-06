@@ -1,6 +1,8 @@
 defmodule TwentythreeTestTwo do
   use ExUnit.Case
 
+  "467..114.."
+
   test "disect List from string" do
     assert Daytwo.createGemList(
              "Game 5: 19 blue, 12 red; 19 blue, 2 green, 1 red; 13 red, 11 blue"
